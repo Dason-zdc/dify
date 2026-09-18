@@ -14,6 +14,7 @@ from controllers.console import console_ns
 from controllers.console.wraps import (
     RBACPermission,
     account_initialization_required,
+    current_account_with_tenant,
     is_admin_or_owner_required,
     model_validate,
     rbac_permission_required,
@@ -353,6 +354,8 @@ class ModelProviderIconApi(Resource):
     @console_ns.response(200, "Model provider icon")
     def get(self, tenant_id: str, provider: str, icon_type: str, lang: str):
         # response-contract:ignore binary send_file response
+        if tenant_id == "current":
+            _, tenant_id = current_account_with_tenant()
         model_provider_service = ModelProviderService()
         icon, mimetype = model_provider_service.get_model_provider_icon(
             tenant_id=tenant_id,

@@ -27,7 +27,8 @@ def upgrade():
     conn = op.get_bind()
     
     if _is_pg(conn):
-        op.execute('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";')
+        # uuid-ossp extension not available; uuid_generate_v4() provided by built-in gen_random_uuid()
+        pass
     else:
         pass
 
